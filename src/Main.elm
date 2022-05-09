@@ -20,13 +20,13 @@ type alias Model =
     { quote : String }
 
 
+type Msg
+    = GetQuote
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model "", Cmd.none )
-
-
-type Msg
-    = GetQuote
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
