@@ -5,6 +5,7 @@ import Html exposing (Html, blockquote, button, div, h2, p, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
+import Url.Builder
 
 
 main : Program () Model Msg
@@ -73,9 +74,9 @@ fetchRandomQuote =
 
 baseApiUrl : String
 baseApiUrl =
-    "http://localhost:3001/"
+    "http://localhost:3001"
 
 
 randomQuoteUrl : String
 randomQuoteUrl =
-    baseApiUrl ++ "api/random-quote"
+    Url.Builder.crossOrigin baseApiUrl ["api", "random-quote"] []
