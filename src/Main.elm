@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, blockquote, button, div, h2, p, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Http
 
 
 main : Program () Model Msg
@@ -22,11 +23,12 @@ type alias Model =
 
 type Msg
     = GetQuote
+    | GotQuote (Result Http.Error String)
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model "", Cmd.none )
+    ( Model "", fetchRandomQuoteCmd )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,6 +36,7 @@ update msg model =
     case msg of
         GetQuote ->
             ( { model | quote = model.quote ++ "A quote!" }, Cmd.none )
+        _ -> ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -47,3 +50,21 @@ view model =
             [ p [] [ text model.quote ]
             ]
         ]
+
+
+fetchRandomQuoteCmd : Cmd Msg
+fetchRandomQuoteCmd =
+    Http.get
+        { url = randomQuoteUrl
+        , expect = Http.expectString GotQuote
+        }
+
+
+api : String
+api =
+    "http://localhost:3001/"
+
+
+randomQuoteUrl : String
+randomQuoteUrl =
+    api ++ "api/random-quote"
