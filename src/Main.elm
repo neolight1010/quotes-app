@@ -71,11 +71,11 @@ fetchRandomQuote =
         }
 
 
-api : String
-api =
+baseApiUrl : String
+baseApiUrl =
     "http://localhost:3001/"
 
 
 randomQuoteUrl : String
 randomQuoteUrl =
-    api ++ "api/random-quote"
+    baseApiUrl ++ "api/random-quote"
