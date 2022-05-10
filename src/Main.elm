@@ -28,14 +28,14 @@ type Msg
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model "", fetchRandomQuoteCmd )
+    ( Model "", fetchRandomQuote )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetQuote ->
-            ( model, fetchRandomQuoteCmd )
+            ( model, fetchRandomQuote )
 
         GotQuote result ->
             ( gotQuote result model, Cmd.none )
@@ -63,8 +63,8 @@ gotQuote result model =
            { model | quote = quote }
 
 
-fetchRandomQuoteCmd : Cmd Msg
-fetchRandomQuoteCmd =
+fetchRandomQuote : Cmd Msg
+fetchRandomQuote =
     Http.get
         { url = randomQuoteUrl
         , expect = Http.expectString GotQuote
