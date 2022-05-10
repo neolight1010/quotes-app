@@ -38,7 +38,7 @@ update msg model =
             ( model, fetchRandomQuoteCmd )
 
         GotQuote result ->
-            ( onGotQuote result model, Cmd.none )
+            ( gotQuote result model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -54,8 +54,8 @@ view model =
         ]
 
 
-onGotQuote : (Result Http.Error String) -> Model -> Model
-onGotQuote result model =
+gotQuote : (Result Http.Error String) -> Model -> Model
+gotQuote result model =
     case result of
        Err _ ->
             model
