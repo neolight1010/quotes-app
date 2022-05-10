@@ -35,8 +35,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetQuote ->
-            ( { model | quote = model.quote ++ "A quote!" }, Cmd.none )
-        _ -> ( model, Cmd.none )
+            ( model, fetchRandomQuoteCmd )
+
+        GotQuote result ->
+            ( onGotQuote result model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -50,6 +52,15 @@ view model =
             [ p [] [ text model.quote ]
             ]
         ]
+
+
+onGotQuote : (Result Http.Error String) -> Model -> Model
+onGotQuote result model =
+    case result of
+       Err _ ->
+            model
+       Ok quote ->
+           { model | quote = quote }
 
 
 fetchRandomQuoteCmd : Cmd Msg
