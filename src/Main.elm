@@ -86,3 +86,7 @@ baseApiUrl =
 randomQuoteUrl : String
 randomQuoteUrl =
     Url.Builder.crossOrigin baseApiUrl [ "api", "random-quote" ] []
+
+
+registerUrl : String
+registerUrl = Url.Builder.crossOrigin baseApiUrl [ "users" ] []
