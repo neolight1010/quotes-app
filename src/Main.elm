@@ -57,8 +57,14 @@ update msg model =
         AuthedUser result ->
             ( authedUser result model, Cmd.none )
 
-        _ ->
-            ( model, Cmd.none )
+        SetUsername username ->
+            ( { model | username = username }, Cmd.none )
+
+        SetPassword password ->
+            ( { model | password = password }, Cmd.none )
+
+        ClickRegisterUser ->
+            ( model, authUser model registerUrl )
 
 
 view : Model -> Html Msg
