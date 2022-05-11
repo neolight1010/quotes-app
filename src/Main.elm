@@ -19,7 +19,12 @@ main =
 
 
 type alias Model =
-    { quote : String }
+    { quote : String
+    , username : String
+    , password : String
+    , token : String
+    , errorMsg : String
+    }
 
 
 type Msg
@@ -29,7 +34,7 @@ type Msg
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model "", fetchRandomQuote )
+    ( Model "" "" "" "" "", fetchRandomQuote )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -55,13 +60,14 @@ view model =
         ]
 
 
-gotQuote : (Result Http.Error String) -> Model -> Model
+gotQuote : Result Http.Error String -> Model -> Model
 gotQuote result model =
     case result of
-       Err _ ->
+        Err _ ->
             model
-       Ok quote ->
-           { model | quote = quote }
+
+        Ok quote ->
+            { model | quote = quote }
 
 
 fetchRandomQuote : Cmd Msg
@@ -79,4 +85,4 @@ baseApiUrl =
 
 randomQuoteUrl : String
 randomQuoteUrl =
-    Url.Builder.crossOrigin baseApiUrl ["api", "random-quote"] []
+    Url.Builder.crossOrigin baseApiUrl [ "api", "random-quote" ] []
