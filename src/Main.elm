@@ -8,6 +8,7 @@ import Http
 import Json.Decode
 import Json.Encode
 import Url.Builder
+import Debug exposing (toString)
 
 
 main : Program () Model Msg
@@ -48,6 +49,9 @@ update msg model =
 
         GotQuote result ->
             ( gotQuote result model, Cmd.none )
+
+        AuthedUser result ->
+            ( authedUser result model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -119,3 +123,13 @@ authUser model url =
 tokenDecoder : Json.Decode.Decoder String
 tokenDecoder =
     Json.Decode.field "access_token" Json.Decode.string
+
+
+authedUser : Result Http.Error String -> Model -> Model
+authedUser result model =
+    case result of
+        Err error ->
+            { model | errorMsg = toString error }
+
+        Ok token ->
+            { model | token = token, password = "", errorMsg = "" } |> Debug.log "Got new token!"
