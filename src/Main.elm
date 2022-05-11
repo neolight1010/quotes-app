@@ -5,6 +5,8 @@ import Html exposing (Html, blockquote, button, div, h2, p, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
+import Json.Decode
+import Json.Encode
 import Url.Builder
 
 
@@ -89,4 +91,13 @@ randomQuoteUrl =
 
 
 registerUrl : String
-registerUrl = Url.Builder.crossOrigin baseApiUrl [ "users" ] []
+registerUrl =
+    Url.Builder.crossOrigin baseApiUrl [ "users" ] []
+
+
+userEncoder : Model -> Json.Encode.Value
+userEncoder model =
+    Json.Encode.object
+        [ ( "username", Json.Encode.string model.username )
+        , ( "password", Json.Encode.string model.password )
+        ]
