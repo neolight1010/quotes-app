@@ -32,6 +32,7 @@ type alias Model =
 type Msg
     = GetQuote
     | GotQuote (Result Http.Error String)
+    | AuthedUser (Result Http.Error String)
 
 
 init : () -> ( Model, Cmd Msg )
@@ -101,3 +102,20 @@ userEncoder model =
         [ ( "username", Json.Encode.string model.username )
         , ( "password", Json.Encode.string model.password )
         ]
+
+
+authUser : Model -> String -> Cmd Msg
+authUser model url =
+    Http.post
+        { url = url
+        , body =
+            model
+                |> userEncoder
+                |> Http.jsonBody
+        , expect = Http.expectJson AuthedUser tokenDecoder
+        }
+
+
+tokenDecoder : Json.Decode.Decoder String
+tokenDecoder =
+    Json.Decode.field "access_token" Json.Decode.string
